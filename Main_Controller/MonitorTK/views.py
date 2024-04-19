@@ -53,7 +53,7 @@ def start(request):
         request.session['user_name'] = user_name
         return redirect('start')
     else:
-        return render(request,'MonitorTK/index_1.html',
+        return render(request,'MonitorTK/index.html',
                       {'user_name': user_name,
                        'database': database, 'time_now': time_now, 'workload_list': workload_list})
 

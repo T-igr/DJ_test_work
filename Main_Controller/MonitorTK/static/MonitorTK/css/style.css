@@ -164,3 +164,7 @@ p {
 .personnel-info {
      margin: 10px 0; /* Настройте отступы по вашему усмотрению */
 }
+
+.orange-background {
+    background-color: orange;
+}

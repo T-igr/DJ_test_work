@@ -1,135 +1,150 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="{% static 'MonitorTK/css/style.css' %}">
-    <title>Мониторинг</title>
-</head>
-<body>
-
-<div class="header">
-    <div class="left-section">
-        <h1>Мониторинг главного контроллера</h1>
-        <br>
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="user_name" value="{{ user_name }}">
-            <input type="hidden" name="operation" value="create">
-            <button type="submit">Добавить вызов контроллера</button>
-        </form>
-    </div>
-    <div class="right-section">
-        <h2>Вы вошли как контроллер: {{ user_name }}</h2>
-        <br>
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="user_name" value="Иванов И.И.">
-            <button type="submit">Войти как Иванов И.И.</button>
-        </form>
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="user_name" value="Петров П.П.">
-            <button type="submit">Войти как Петров П.П.</button>
-        </form>
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="user_name" value="Сидоров С.С.">
-            <button type="submit">Войти как Сидоров С.С.</button>
-        </form>
-    </div>
-</div>
+{% extends 'base.html' %}
 
 
 
-<div class="container-row">
-    <div class="container">
-        <h2>СЗ ожидаеют контроллера:</h2>
-        <div class="txt_container">кол-во СЗ: 99 ед</div>
-        <div class="txt_container">объем работ: 99 ч</div>
 
-        <div class="content_container">
-            <h4>Заказ №: 22345</h4>
+
+{% block expectation %}
+{% for position in database %}
+    {% if not position.controller_name_response %}
+
+         <div class="content_container {% if position.priority < 4 %}orange-background{% endif %}">
+            <h4>Заказ №: {{ position.order }}</h4>
 
             <div class="info-section">
                 <p>
-                    <span class="phrase">Цех №: 31</span>
-                    <span class="phrase">Участок №: 2</span>
-                    <span class="phrase">Изделие №: LR-123-01/1</span>
+                    <span class="phrase">Цех №: <strong>{{ position.workshop }}</strong></span>
+                    <span class="phrase">Участок №: <strong>{{ position.area }}</strong></span>
+                    <span class="phrase">Изделие: <strong>{{ position.product }}</strong></span>
                 </p>
                 <p>
-                    <span class="phrase">Операция №: 0701</span>
-                    <span class="phrase">Рабочий центр: Huron NX40</span>
+                    <span class="phrase">Операция №: <strong>0{{ position.operation }}</strong></span>
+                    <span class="phrase">Рабочий центр: <strong>{{ position.equipment }}</strong></span>
                 </p>
                 <p>
-                    <span class="phrase">Имя операции: Фрезерная обработка</span>
+                    <span class="phrase">Имя операции: <strong>{{ position.operation_name }}</strong></span>
                 </p>
             </div>
 
             <ul class="personnel-info">
-                <li>ФИО исполнителя: Столяров Д.В.</li>
-                <li>ФИО мастера: {{ surname }} А.А.</li>
-                <li>ФИО контроллера: {{ name }} Ю.Ю</li>
+                <li>ФИО исполнителя: <strong>{{ position.worker_name }}</strong></li>
+                <li>ФИО мастера: <strong>{{ position.master_name }}</strong></li>
             </ul>
 
-            <p>Длительность приемки:</p>
+            <form method="post" action="{% url 'start' %}">
+                {% csrf_token %}
+                <input type="hidden" name="operation" value="controller is selected">
+                <input type="hidden" name="order_id" value="{{ position.id }}">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+
+                <button onclick="refreshPage()" type="submit">Принять в работу</button>
+            </form>
+
+        </div>
+
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+
+
+
+{% block in_work %}
+{% for position in database %}
+    {% if position.controller_name_response and not position.decision %}
+
+         <div class="content_container {% if position.priority < 4 %}orange-background{% endif %}">
+            <h4>Заказ №: {{ position.order }}</h4>
+
+            <div class="info-section">
+                <p>
+                    <span class="phrase">Цех №: <strong>{{ position.workshop }}</strong></span>
+                    <span class="phrase">Участок №: <strong>{{ position.area }}</strong></span>
+                    <span class="phrase">Изделие: <strong>{{ position.product }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Операция №: <strong>0{{ position.operation }}</strong></span>
+                    <span class="phrase">Рабочий центр: <strong>{{ position.equipment }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Имя операции: <strong>{{ position.operation_name }}</strong></span>
+                </p>
+            </div>
+
+            <ul class="personnel-info">
+                <li>ФИО исполнителя: <strong>{{ position.worker_name }}</strong></li>
+                <li>ФИО мастера: <strong>{{ position.master_name }}</strong></li>
+                <li>ФИО контроллера: <strong>{{ position.controller_name_response }}</strong></li>
+            </ul>
+
+            <p>Длительность приемки: <strong>{{position.value_fact}}</strong> ч</p>
+
+            <form method="post" action="{% url 'result' %}">
+                {% csrf_token %}
+                <input type="hidden" name="operation" value="controller is selected">
+                <input type="hidden" name="order_id" value="{{ position.id }}">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+
+                <button type="submit">Принять решение</button>
+            </form>
+
+        </div>
+
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+
+
+
+{% block done %}
+{% for position in database %}
+
+    {% if position.datetime_controller_in_work.date == time_now.date %}
+
+         <div class="content_container {% if position.priority < 4 %}orange-background{% endif %}">
+            <h4>Заказ №: {{ position.order }}</h4>
+
+            <div class="info-section">
+                <p>
+                    <span class="phrase">Цех №: <strong>{{ position.workshop }}</strong></span>
+                    <span class="phrase">Участок №: <strong>{{ position.area }}</strong></span>
+                    <span class="phrase">Изделие: <strong>{{ position.product }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Операция №: <strong>0{{ position.operation }}</strong></span>
+                    <span class="phrase">Рабочий центр: <strong>{{ position.equipment }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Имя операции: <strong>{{ position.operation_name }}</strong></span>
+                </p>
+            </div>
+
+            <ul class="personnel-info">
+                <li>ФИО исполнителя: <strong>{{ position.worker_name }}</strong></li>
+                <li>ФИО мастера: <strong>{{ position.master_name }}</strong></li>
+                <li>ФИО контроллера: <strong>{{ position.controller_name_response }}</strong></li>
+            </ul>
+
+            <p>Длительность приемки: <strong>{{position.value_fact}}</strong> ч</p>
 
             <p>
-                Решение: Принято <br>
-                цукцукцукцу цукцукцукц укцукцукц цукцукцук цукцукцук цукцукцук цукцукц цуцукц цкцкц
+                Решение: <strong>{{ position.decision }} ({{ position.controller_name_result }})</strong><br>
+                {{ position.decision_text }}
             </p>
 
-            <button type="button">Принять в работу</button>
+
+            <form method="post" action="{% url 'result' %}">
+                {% csrf_token %}
+                <input type="hidden" name="operation" value="controller is selected">
+                <input type="hidden" name="order_id" value="{{ position.id }}">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+
+                <button type="submit">Редактировать решение</button>
+            </form>
+
         </div>
 
-
-
-
-    </div>
-
-    <div class="container">
-        <h2>СЗ в работе у контроллера:</h2>
-        <div class="content">
-          <!-- Здесь содержимое второго контейнера -->
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-        </div>
-    </div>
-
-
-    <div class="container">
-        <h2>Результаты за сегодня:</h2>
-        <div class="content">
-          <!-- Здесь содержимое третьего контейнера -->
-            Имя участника = {{ name }}<br>
-            Фамилия участника = {{ surname }}
-        </div>
-    </div>
-</div>
-
-
-
-
-</body>
-</html>
+    {% endif %}
+{% endfor %}
+{% endblock %}
