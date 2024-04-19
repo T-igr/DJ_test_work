@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+
+
+
+
+{% block expectation %}
+{% for position in database %}
+    {% if not position.controller_name_response %}
+
+        <div class="content_container">
+            <h4>Заказ №: {{ position.order }}</h4>
+
+            <div class="info-section">
+                <p>
+                    <span class="phrase">Цех №: <strong>{{ position.workshop }}</strong></span>
+                    <span class="phrase">Участок №: <strong>{{ position.area }}</strong></span>
+                    <span class="phrase">Изделие: <strong>{{ position.product }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Операция №: <strong>0{{ position.operation }}</strong></span>
+                    <span class="phrase">Рабочий центр: <strong>{{ position.equipment }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Имя операции: <strong>{{ position.operation_name }}</strong></span>
+                </p>
+            </div>
+
+            <ul class="personnel-info">
+                <li>ФИО исполнителя: <strong>{{ position.worker_name }}</strong></li>
+                <li>ФИО мастера: <strong>{{ position.master_name }}</strong></li>
+            </ul>
+
+            <form method="post" action="{% url 'start' %}">
+                {% csrf_token %}
+                <input type="hidden" name="operation" value="controller is selected">
+                <input type="hidden" name="order_id" value="{{ position.id }}">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+
+                <button onclick="refreshPage()" type="submit">Принять в работу</button>
+            </form>
+
+        </div>
+
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+
+
+
+{% block in_work %}
+{% for position in database %}
+    {% if position.controller_name_response and not position.decision %}
+
+        <div class="content_container">
+            <h4>Заказ №: {{ position.order }}</h4>
+
+            <div class="info-section">
+                <p>
+                    <span class="phrase">Цех №: <strong>{{ position.workshop }}</strong></span>
+                    <span class="phrase">Участок №: <strong>{{ position.area }}</strong></span>
+                    <span class="phrase">Изделие: <strong>{{ position.product }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Операция №: <strong>0{{ position.operation }}</strong></span>
+                    <span class="phrase">Рабочий центр: <strong>{{ position.equipment }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Имя операции: <strong>{{ position.operation_name }}</strong></span>
+                </p>
+            </div>
+
+            <ul class="personnel-info">
+                <li>ФИО исполнителя: <strong>{{ position.worker_name }}</strong></li>
+                <li>ФИО мастера: <strong>{{ position.master_name }}</strong></li>
+                <li>ФИО контроллера: <strong>{{ position.controller_name_response }}</strong></li>
+            </ul>
+
+            <p>Длительность приемки: <strong>{{position.value_fact}}</strong> ч</p>
+
+            <form method="post" action="{% url 'result' %}">
+                {% csrf_token %}
+                <input type="hidden" name="operation" value="controller is selected">
+                <input type="hidden" name="order_id" value="{{ position.id }}">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+
+                <button type="submit">Принять решение</button>
+            </form>
+
+        </div>
+
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+
+
+
+{% block done %}
+{% for position in database %}
+
+    {% if position.datetime_controller_in_work.date == time_now.date %}
+
+        <div class="content_container">
+            <h4>Заказ №: {{ position.order }}</h4>
+
+            <div class="info-section">
+                <p>
+                    <span class="phrase">Цех №: <strong>{{ position.workshop }}</strong></span>
+                    <span class="phrase">Участок №: <strong>{{ position.area }}</strong></span>
+                    <span class="phrase">Изделие: <strong>{{ position.product }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Операция №: <strong>0{{ position.operation }}</strong></span>
+                    <span class="phrase">Рабочий центр: <strong>{{ position.equipment }}</strong></span>
+                </p>
+                <p>
+                    <span class="phrase">Имя операции: <strong>{{ position.operation_name }}</strong></span>
+                </p>
+            </div>
+
+            <ul class="personnel-info">
+                <li>ФИО исполнителя: <strong>{{ position.worker_name }}</strong></li>
+                <li>ФИО мастера: <strong>{{ position.master_name }}</strong></li>
+                <li>ФИО контроллера: <strong>{{ position.controller_name_response }}</strong></li>
+            </ul>
+
+            <p>Длительность приемки: <strong>{{position.value_fact}}</strong> ч</p>
+
+            <p>
+                Решение: <strong>{{ position.decision }} ({{ position.controller_name_result }})</strong><br>
+                {{ position.decision_text }}
+            </p>
+
+
+            <form method="post" action="{% url 'result' %}">
+                {% csrf_token %}
+                <input type="hidden" name="operation" value="controller is selected">
+                <input type="hidden" name="order_id" value="{{ position.id }}">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+
+                <button type="submit">Редактировать решение</button>
+            </form>
+
+        </div>
+
+    {% endif %}
+{% endfor %}
+{% endblock %}

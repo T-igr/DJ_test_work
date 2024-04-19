@@ -1,0 +1,166 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+h2 {
+text-align: center;
+}
+
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #C9D6DF;
+    padding: 20px;
+    border-radius: 10px;
+    color: black;
+    margin-bottom: 40px;
+}
+
+.left-section h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.left-section button {
+    background-color: #1E2022;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.left-section button:hover {
+    background-color: #34404C;
+}
+
+.right-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.right-section form {
+    margin-bottom: 10px;
+}
+
+.right-section button {
+    background-color: #1E2022;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.right-section button:hover {
+    background-color: #34404C;
+}
+
+.left-section,
+.right-section {
+    display: flex; /* Располагаем кнопки внутри секций в виде flex-контейнеров */
+    align-items: center; /* Выравниваем элементы по вертикали */
+}
+
+.left-section button,
+.right-section button {
+    margin-left: 10px; /* Добавляем небольшой отступ между кнопками */
+}
+
+
+
+
+
+
+.container-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+}
+
+
+.txt_container {
+
+    width: 200px;
+    display: inline-block;
+    margin: 5px;
+    text-align: center;
+}
+
+
+.container {
+    width: 570px;
+    background-color: white;
+    border-radius: 20px;
+    height: calc(100vh - 150px); /* 100% высоты экрана минус 50px для отступов */
+    overflow-y: auto; /* Добавляем вертикальную прокрутку по мере необходимости */
+
+
+
+
+
+}
+
+.container h2 {
+    background-color: #52616B;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 10px; /* Добавим немного отступа для лучшего визуального восприятия */
+    margin-top: 0; /* Сбросим верхний отступ */
+    text-align: center;
+}
+
+
+
+.container .content  {
+    padding: 20px;
+    /* Стили содержимого контейнера, если есть */
+}
+
+
+.content_container {
+    border-radius: 10px;
+    background-color: #C9D6DF;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 20px;
+}
+
+.content_container .button_container {
+    margin-top: auto; /* Отталкиваем кнопку вниз */
+    text-align: right; /* Выравниваем текст по правому краю */
+}
+
+.content_container button {
+    background-color: #1E2022;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.content_container button:hover {
+    background-color: #34404C;
+}
+
+
+.phrase {
+    margin-right: 10px; /* Пример задания отступа между фразами */
+}
+
+p {
+     margin: 4px 0; /* Настройте отступы по вашему усмотрению */
+}
+
+.personnel-info {
+     margin: 10px 0; /* Настройте отступы по вашему усмотрению */
+}

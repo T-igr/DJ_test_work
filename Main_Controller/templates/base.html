@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="{% static 'MonitorTK/css/style.css' %}">
+    <title>Мониторинг</title>
+</head>
+<body>
+
+
+<!--Шапка страницы-->
+<div class="header">
+    <div class="left-section">
+        <h1>Мониторинг главного контроллера</h1>
+        <br>
+        <form method="post" action="{% url 'start' %}">
+            {% csrf_token %}
+            <input type="hidden" name="user_name" value="{{ user_name }}">
+            <input type="hidden" name="operation" value="create">
+            <button type="submit">Добавить вызов контроллера</button>
+        </form>
+    </div>
+    <div class="right-section">
+        <h2>Вы вошли как контроллер: {{ user_name }}</h2>
+        <br>
+        <form method="post" action="{% url 'start' %}">
+            {% csrf_token %}
+            <input type="hidden" name="user_name" value="Иванов И.И.">
+            <button type="submit">Войти как Иванов И.И.</button>
+        </form>
+        <form method="post" action="{% url 'start' %}">
+            {% csrf_token %}
+            <input type="hidden" name="user_name" value="Петров П.П.">
+            <button type="submit">Войти как Петров П.П.</button>
+        </form>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_name" value="Сидоров С.С.">
+            <button type="submit">Войти как Сидоров С.С.</button>
+        </form>
+    </div>
+</div>
+
+
+
+<!--Тело страницы-->
+<div class="container-row">
+    <div class="container">
+        <h2>СЗ ожидаеют контроллера:</h2>
+        <div class="txt_container">кол-во СЗ: {{ workload_list.0 }} ед</div>
+        <div class="txt_container">объем работ: {{ workload_list.1 }} ч</div>
+
+        <!-- Содержимое первого контейнера -->
+
+        {% block expectation %} {% endblock %}
+
+    </div>
+
+    <div class="container">
+        <h2>СЗ в работе у контроллера:</h2>
+        <div class="txt_container">кол-во СЗ: {{ workload_list.2 }} ед</div>
+        <div class="txt_container">объем работ: {{ workload_list.3 }} ч</div>
+
+        <!-- Содержимое второго контейнера -->
+
+        {% block in_work %}{% endblock %}
+
+    </div>
+
+    <div class="container">
+        <h2>Результаты за сегодня:</h2>
+
+        <div class="txt_container">кол-во СЗ: {{ workload_list.4 }} ед</div>
+        <div class="txt_container">объем работ: {{ workload_list.5 }} ч</div>
+        <!-- Содержимое третьего контейнера -->
+
+        {% block done %}{% endblock %}
+
+    </div>
+</div>
+
+<script>
+    // Функция для автоматического обновления страницы
+    setInterval(function() {
+        location.reload();
+    }, 10000); // Обновлять страницу каждые 45 секунд (45000 миллисекунд)
+
+    // Функция для обновления страницы
+    function refreshPage() {
+        window.location.reload(); // Обновление страницы
+    }
+
+</script>
+
+
+</body>
+</html>

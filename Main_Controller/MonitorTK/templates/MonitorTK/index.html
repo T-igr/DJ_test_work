@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="{% static 'MonitorTK/css/style.css' %}">
+    <title>Мониторинг</title>
+</head>
+<body>
+
+<div class="header">
+    <div class="left-section">
+        <h1>Мониторинг главного контроллера</h1>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_name" value="{{ user_name }}">
+            <input type="hidden" name="operation" value="create">
+            <button type="submit">Добавить вызов контроллера</button>
+        </form>
+    </div>
+    <div class="right-section">
+        <h2>Вы вошли как контроллер: {{ user_name }}</h2>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_name" value="Иванов И.И.">
+            <button type="submit">Войти как Иванов И.И.</button>
+        </form>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_name" value="Петров П.П.">
+            <button type="submit">Войти как Петров П.П.</button>
+        </form>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_name" value="Сидоров С.С.">
+            <button type="submit">Войти как Сидоров С.С.</button>
+        </form>
+    </div>
+</div>
+
+
+
+<div class="container-row">
+    <div class="container">
+        <h2>СЗ ожидаеют контроллера:</h2>
+        <div class="txt_container">кол-во СЗ: 99 ед</div>
+        <div class="txt_container">объем работ: 99 ч</div>
+
+        <div class="content_container">
+            <h4>Заказ №: 22345</h4>
+
+            <div class="info-section">
+                <p>
+                    <span class="phrase">Цех №: 31</span>
+                    <span class="phrase">Участок №: 2</span>
+                    <span class="phrase">Изделие №: LR-123-01/1</span>
+                </p>
+                <p>
+                    <span class="phrase">Операция №: 0701</span>
+                    <span class="phrase">Рабочий центр: Huron NX40</span>
+                </p>
+                <p>
+                    <span class="phrase">Имя операции: Фрезерная обработка</span>
+                </p>
+            </div>
+
+            <ul class="personnel-info">
+                <li>ФИО исполнителя: Столяров Д.В.</li>
+                <li>ФИО мастера: {{ surname }} А.А.</li>
+                <li>ФИО контроллера: {{ name }} Ю.Ю</li>
+            </ul>
+
+            <p>Длительность приемки:</p>
+
+            <p>
+                Решение: Принято <br>
+                цукцукцукцу цукцукцукц укцукцукц цукцукцук цукцукцук цукцукцук цукцукц цуцукц цкцкц
+            </p>
+
+            <button type="button">Принять в работу</button>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="container">
+        <h2>СЗ в работе у контроллера:</h2>
+        <div class="content">
+          <!-- Здесь содержимое второго контейнера -->
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+        </div>
+    </div>
+
+
+    <div class="container">
+        <h2>Результаты за сегодня:</h2>
+        <div class="content">
+          <!-- Здесь содержимое третьего контейнера -->
+            Имя участника = {{ name }}<br>
+            Фамилия участника = {{ surname }}
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>
