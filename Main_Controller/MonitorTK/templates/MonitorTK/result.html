@@ -10,6 +10,7 @@
 </head>
 <body>
 
+
 <div class="container">
   <h2>Фиксация результата по заказу: {{ position.order }}</h2>
   <p>
@@ -28,25 +29,16 @@
   </p>
 
 
-  <form method="post" action="{% url 'start' %}">
+  <form method="post">
+    <form method="post" action="{% url 'start' %}">
     {% csrf_token %}
-    <div class="radio-group">
-      <input type="radio" id="accepted" name="status" value="Принято">
-      <label for="accepted">Принято</label>
 
-      <input type="radio" id="return" name="status" value="Возврат на доработку">
-      <label for="return">Возврат на доработку</label>
-
-      <input type="radio" id="defect" name="status" value="Брак">
-      <label for="defect">Брак</label>
-    </div>
-
-    <textarea id="comment" name="comment" placeholder="Введите комментарий (до 2000 символов)" maxlength="5000"></textarea>
-
-
+    {{ form.as_p }}
     <input type="hidden" name="operation" value="controller result">
     <input type="hidden" name="order_id" value="{{ position.id }}">
+    <input type="hidden" name="status" value="{{ status }}">
     <input type="hidden" name="user_name" value="{{ user_name }}">
+
 
     <input type="submit" value="Зафиксировать как результат">
   </form>

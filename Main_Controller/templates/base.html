@@ -48,9 +48,9 @@
 <!--Тело страницы-->
 <div class="container-row">
     <div class="container">
-        <h2>СЗ ожидаеют контроллера:</h2>
-        <div class="txt_container">кол-во СЗ: {{ workload_list.0 }} ед</div>
-        <div class="txt_container">объем работ: {{ workload_list.1 }} ч</div>
+        <h2>СЗ ожидают контроллера:</h2>
+        <div class="txt_container">кол-во СЗ: {{ count_task }} ед</div>
+        <div class="txt_container">объем работ: {{ sum_task|floatformat:2 }} ч</div>
 
         <!-- Содержимое первого контейнера -->
 
@@ -60,8 +60,8 @@
 
     <div class="container">
         <h2>СЗ в работе у контроллера:</h2>
-        <div class="txt_container">кол-во СЗ: {{ workload_list.2 }} ед</div>
-        <div class="txt_container">объем работ: {{ workload_list.3 }} ч</div>
+        <div class="txt_container">кол-во СЗ: {{ count_work }} ед</div>
+        <div class="txt_container">объем работ: {{ sum_work|floatformat:2 }} ч</div>
 
         <!-- Содержимое второго контейнера -->
 
@@ -72,8 +72,8 @@
     <div class="container">
         <h2>Результаты за сегодня:</h2>
 
-        <div class="txt_container">кол-во СЗ: {{ workload_list.4 }} ед</div>
-        <div class="txt_container">объем работ: {{ workload_list.5 }} ч</div>
+        <div class="txt_container">кол-во СЗ: {{ count_done }} ед</div>
+        <div class="txt_container">объем работ: {{ sum_done|floatformat:2 }} ч</div>
         <!-- Содержимое третьего контейнера -->
 
         {% block done %}{% endblock %}

@@ -1,15 +1,10 @@
 {% extends 'base.html' %}
 
-
-
-
-
 {% block expectation %}
-{% for position in database %}
-    {% if not position.controller_name_response %}
+{% for position in status_task %}
 
          <div class="content_container {% if position.priority < 4 %}orange-background{% endif %}">
-            <h4>Заказ №: {{ position.order }}</h4>
+            <h4>Заказ №: {{ position.order }} {% if "Доработка" in position.status %}(Доработка){% endif %}</h4>
 
             <div class="info-section">
                 <p>
@@ -24,6 +19,7 @@
                 <p>
                     <span class="phrase">Имя операции: <strong>{{ position.operation_name }}</strong></span>
                 </p>
+                <p><span class="phrase">Плановое время на проверку: <strong>{{ position.value }} </strong>ч</span></p>
             </div>
 
             <ul class="personnel-info">
@@ -36,25 +32,25 @@
                 <input type="hidden" name="operation" value="controller is selected">
                 <input type="hidden" name="order_id" value="{{ position.id }}">
                 <input type="hidden" name="user_name" value="{{ user_name }}">
+                <input type="hidden" name="order_name" value="{{ position.order }}">
+                <input type="hidden" name="status" value="{{ position.status }}">
 
                 <button onclick="refreshPage()" type="submit">Принять в работу</button>
             </form>
 
         </div>
 
-    {% endif %}
+
 {% endfor %}
 {% endblock %}
 
 
 
-
 {% block in_work %}
-{% for position in database %}
-    {% if position.controller_name_response and not position.decision %}
+{% for position in status_work %}
 
          <div class="content_container {% if position.priority < 4 %}orange-background{% endif %}">
-            <h4>Заказ №: {{ position.order }}</h4>
+            <h4>Заказ №: {{ position.order }} {% if "Доработка" in position.status %}(Доработка){% endif %}</h4>
 
             <div class="info-section">
                 <p>
@@ -69,6 +65,7 @@
                 <p>
                     <span class="phrase">Имя операции: <strong>{{ position.operation_name }}</strong></span>
                 </p>
+                <p><span class="phrase">Плановое время на проверку: <strong>{{ position.value }} </strong>ч</span></p>
             </div>
 
             <ul class="personnel-info">
@@ -81,29 +78,26 @@
 
             <form method="post" action="{% url 'result' %}">
                 {% csrf_token %}
-                <input type="hidden" name="operation" value="controller is selected">
+                <input type="hidden" name="operation" value="controller is worked">
                 <input type="hidden" name="order_id" value="{{ position.id }}">
                 <input type="hidden" name="user_name" value="{{ user_name }}">
+                <input type="hidden" name="status" value="{{ position.status }}">
 
                 <button type="submit">Принять решение</button>
             </form>
 
         </div>
 
-    {% endif %}
+
 {% endfor %}
 {% endblock %}
 
 
-
-
 {% block done %}
-{% for position in database %}
-
-    {% if position.datetime_controller_in_work.date == time_now.date %}
+{% for position in status_done %}
 
          <div class="content_container {% if position.priority < 4 %}orange-background{% endif %}">
-            <h4>Заказ №: {{ position.order }}</h4>
+            <h4>Заказ №: {{ position.order }}   {{position.status}}</h4>
 
             <div class="info-section">
                 <p>
@@ -118,6 +112,7 @@
                 <p>
                     <span class="phrase">Имя операции: <strong>{{ position.operation_name }}</strong></span>
                 </p>
+                <p><span class="phrase">Плановое время на проверку: <strong>{{ position.value }} </strong>ч</span></p>
             </div>
 
             <ul class="personnel-info">
@@ -126,7 +121,7 @@
                 <li>ФИО контроллера: <strong>{{ position.controller_name_response }}</strong></li>
             </ul>
 
-            <p>Длительность приемки: <strong>{{position.value_fact}}</strong> ч</p>
+            <p>Фактическая длительность приемки: <strong>{{position.value_fact}}</strong> ч</p>
 
             <p>
                 Решение: <strong>{{ position.decision }} ({{ position.controller_name_result }})</strong><br>
@@ -136,7 +131,7 @@
 
             <form method="post" action="{% url 'result' %}">
                 {% csrf_token %}
-                <input type="hidden" name="operation" value="controller is selected">
+                <input type="hidden" name="operation" value="controller is worked">
                 <input type="hidden" name="order_id" value="{{ position.id }}">
                 <input type="hidden" name="user_name" value="{{ user_name }}">
 
@@ -145,6 +140,6 @@
 
         </div>
 
-    {% endif %}
+
 {% endfor %}
 {% endblock %}

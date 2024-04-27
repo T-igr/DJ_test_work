@@ -38,9 +38,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-.radio-group label {
-    margin-right: 20px;
-}
 
 textarea {
     width: 100%;
@@ -64,3 +61,7 @@ input[type="submit"]:hover {
     background-color: #34404C;
 }
 
+.radio-group label {
+    display: inline-block;
+    margin-right: 20px; /* Регулируйте это значение в зависимости от ваших предпочтений */
+}
